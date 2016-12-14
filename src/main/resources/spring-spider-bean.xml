@@ -5,4 +5,8 @@
     <bean id="spiderBean" class="com.wonggigi.entity.Spider">
         <property name="id" value="1" />
     </bean>
+
+    <bean id="parseDocumentBean" class="com.wonggigi.util.ParseDocument">
+        <property name="id" value="1" />
+    </bean>
 </beans>

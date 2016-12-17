@@ -24,12 +24,12 @@ public class App
         ApplicationContext context = new ClassPathXmlApplicationContext("spring-spider-bean.xml");
         Spider spider = (Spider) context.getBean("spiderBean");
         Dictionary dictionary=(Dictionary)context.getBean("dictionaryBean");
-      //  String s= spider.get(url);
-      //  ParseDocument pd=(ParseDocument)context.getBean("parseDocumentBean");
-       // Document d=pd.parse(s,url);
+        String s= spider.get(url);
+        ParseDocument pd=(ParseDocument)context.getBean("parseDocumentBean");
+        Document d=pd.parse(s,url);
       //  dictionary.build();
-       // DocumentServiceImpl ds=new DocumentServiceImpl();
-       // ds.addDocument(d);
+        DocumentServiceImpl ds=new DocumentServiceImpl();
+        ds.addDocument(d);
         System.out.println(dictionary.search("沈阳"));
 
     }

@@ -19,13 +19,13 @@ public class Spider {
     public  void setId(int id){
         this.id=id;
     }
-    public String printId(){
+    public String get(String url){
         String result = "";
         try {
             //获取httpclient实例
             CloseableHttpClient httpclient = HttpClients.createDefault();
             //获取方法实例。GET
-            HttpGet httpGet = new HttpGet("http://news.ifeng.com/a/20161214/50411816_0.shtml");
+            HttpGet httpGet = new HttpGet(url);
             //执行方法得到响应
             CloseableHttpResponse response = httpclient.execute(httpGet);
             try {

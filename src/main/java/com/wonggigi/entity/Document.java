@@ -4,18 +4,10 @@ package com.wonggigi.entity;
  * Created by Hanoi on 2016/12/14.
  */
 public class Document {
-    private int id;
+
     private String url;
     private String title;
-    private String content;
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
+    private String path;
 
     public void setTitle(String title) {
         this.title = title;
@@ -25,12 +17,12 @@ public class Document {
         return title;
     }
 
-    public String getContent() {
-        return content;
+    public String getPath() {
+        return path;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public void setUrl(String url) {

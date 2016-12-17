@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 public class ParseDocument {
     private int id;
     public  void setId(int id){
-
         this.id=id;
     }
     public Document parse(String documentStr,String url){
@@ -24,7 +23,8 @@ public class ParseDocument {
             System.out.println("1: "+title);
         }
         Document d=new Document();
-        d.setContent(documentStr);
+
+        d.setPath("D:\\coll");
         d.setTitle(title);
         d.setUrl(url);
         return d;

@@ -14,7 +14,8 @@
         <property name="id" value="1" />
     </bean>
 
-
+    <bean id="dictionaryBean" class="com.wonggigi.util.Dictionary">
+    </bean>
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>

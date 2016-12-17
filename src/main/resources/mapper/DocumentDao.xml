@@ -5,8 +5,8 @@
 <mapper namespace="com.wonggigi.dao.DocumentDao">
 
     <insert id="addDocument" parameterType="Document" >
-        INSERT INTO document_table(id,url,title,content)
-        VALUE (#{id},#{url},#{title},#{content})
+        INSERT INTO document_table(url,title,path)
+        VALUE (#{url},#{title},#{path})
     </insert>
 
 </mapper>

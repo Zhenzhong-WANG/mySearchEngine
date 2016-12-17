@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+ http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context.xsd
+ http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
     <bean id="spiderBean" class="com.wonggigi.entity.Spider">
         <property name="id" value="1" />
     </bean>
@@ -9,4 +13,61 @@
     <bean id="parseDocumentBean" class="com.wonggigi.util.ParseDocument">
         <property name="id" value="1" />
     </bean>
+
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath*:jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--配置数据库的连接池-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <!-- 配置链接属性-->
+        <property name="driverClass" value="${driver}"/>
+        <property name="jdbcUrl" value="${url}"/>
+        <property name="user" value="${username}"/>
+        <property name="password" value="${password}"/>
+
+        <!--配置c3p0连接池的私有属性-->
+        <property name="maxPoolSize" value="30"/>
+        <property name="minPoolSize" value="10"/>
+        <!--关闭链接后不自动commit-->
+        <property name="autoCommitOnClose" value="false"/>
+        <!--
+        <property name="checkoutTimeout" value="1000"/>-->
+        <!--获取连接失败重试次数-->
+        <property name="acquireRetryAttempts" value="2"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 注入数据库连接池-->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 配置Mybatisq全局文件：-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+
+        <!-- 扫描entity包-->
+        <property name="typeAliasesPackage" value="com.wonggigi.entity"/>
+        <!-- 扫描sql配置文件-->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 注入sqlSessionFactory-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!-- 给出扫描Dao接口包-->
+        <property name="basePackage" value="com.wonggigi.dao"/>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+    <context:component-scan base-package="com.wonggigi.service"/>
+    <!-- 配置事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!-- 因为这个spring-service中没有定义dataSource但在spring-dao中已经定义了 所以后期执行的时候 会自动找到-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 配置基于注解声明事务-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>

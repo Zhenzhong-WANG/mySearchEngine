@@ -7,4 +7,5 @@ import com.wonggigi.entity.Document;
  */
 public interface DocumentDao {
     void addDocument(Document document);
+    Document getDocumentById(int id);
 }

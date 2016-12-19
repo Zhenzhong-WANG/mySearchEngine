@@ -9,4 +9,8 @@
         VALUE (#{url},#{title},#{path})
     </insert>
 
+    <select id="getDocumentById" resultType="Document" parameterType="int">
+        SELECT *
+        FROM document_table WHERE id=#{id}
+    </select>
 </mapper>

@@ -1,4 +1,4 @@
-package com.wonggigi.entity;
+package com.wonggigi.util;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;

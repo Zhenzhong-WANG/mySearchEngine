@@ -8,11 +8,12 @@ import java.util.regex.Pattern;
  * Created by Hanoi on 2016/12/17.
  */
 public class Dictionary {
-    private String filePath=".//dictionary.txt";
+    private String filePath=".//SogouR.txt";
+    private int mod=349;
     private void  inputFile(int fileId,String word){
      //   System.out.println(fileId);
         try{
-            File file = new File(".//dictionary//dictionary"+fileId+".txt");
+            File file = new File(".//dictionary347//dictionary"+fileId+".txt");
 
             if (!file.exists()) {
                 file.createNewFile();
@@ -30,10 +31,10 @@ public class Dictionary {
         for (int j=0;j<word.length();j++){
             code+=word.charAt(j);
         }
-        int fileId=code%37;
+        int fileId=code%mod;
       //  System.out.println(fileId+" , "+word);
         try {
-            File file = new File(".//dictionary//dictionary"+fileId+".txt");
+            File file = new File(".//dictionary347//dictionary"+fileId+".txt");
             if(file.isFile() && file.exists()){ //判断文件是否存在
                 InputStreamReader read = new InputStreamReader(
                         new FileInputStream(file));//考虑到编码格式
@@ -78,7 +79,7 @@ public class Dictionary {
                             String str=words[i];
                             code+=str.charAt(j);
                         }
-                        inputFile(code%37,words[i]);
+                        inputFile(code%mod,words[i]);
                     }
                 }
                 read.close();

@@ -9,4 +9,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface DocumentService {
     void addDocument(Document document);
+    Document getDocumentById(int id);
 }

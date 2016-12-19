@@ -6,7 +6,7 @@
  http://www.springframework.org/schema/context
  http://www.springframework.org/schema/context/spring-context.xsd
  http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
-    <bean id="spiderBean" class="com.wonggigi.entity.Spider">
+    <bean id="spiderBean" class="com.wonggigi.util.Spider">
         <property name="id" value="1" />
     </bean>
 
@@ -16,6 +16,10 @@
 
     <bean id="dictionaryBean" class="com.wonggigi.util.Dictionary">
     </bean>
+
+    <bean id="wordBean" class="com.wonggigi.util.Word">
+    </bean>
+
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>

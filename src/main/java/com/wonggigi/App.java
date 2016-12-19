@@ -31,9 +31,10 @@ public class App
      //    Document d=pd.parse(s,url);
        //   dictionary.build();
       //     documentServiceImpl.addDocument(d);
-        System.out.println(dictionary.search("中华人民共和国"));
+        System.out.println(dictionary.search("中华"));
 
         Document document=documentServiceImpl.getDocumentById(7);
-        word.segment(document);
+       // word.segment(document);
+        word.reverseSegment(document);
     }
 }

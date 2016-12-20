@@ -13,4 +13,9 @@
         SELECT *
         FROM document_table WHERE id=#{id}
     </select>
+
+    <select id="getDocumentByUrl" resultType="Document" parameterType="String">
+        SELECT *
+        FROM document_table WHERE url=#{url}
+    </select>
 </mapper>

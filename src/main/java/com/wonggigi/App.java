@@ -10,6 +10,9 @@ import com.wonggigi.util.Word;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * Hello world!
  *
@@ -20,21 +23,35 @@ public class App
 
     public static void main( String[] args )
     {
-        String url="http://news.ifeng.com/a/20161218/50435153_0.shtml";
+        ArrayList<String> urlArray=new ArrayList<String> ();
+        urlArray.add("http://tieba.baidu.com/p/4810703911");
+        urlArray.add("http://tieba.baidu.com/p/4851332485");
+        urlArray.add("http://news.ifeng.com/a/20161220/50445616_0.shtml");
+        urlArray.add("http://news.ifeng.com/a/20161220/50446200_0.shtml");
+        urlArray.add("https://www.zhihu.com/question/53611840");
+        urlArray.add("https://zhuanlan.zhihu.com/p/22861296?refer=100offer");
+
         ApplicationContext context = new ClassPathXmlApplicationContext("spring-spider-bean.xml");
         Spider spider = (Spider) context.getBean("spiderBean");
         Dictionary dictionary=(Dictionary)context.getBean("dictionaryBean");
+        //   dictionary.build();
         Word word=(Word)context.getBean("wordBean");
         ParseDocument pd=(ParseDocument)context.getBean("parseDocumentBean");
         DocumentServiceImpl documentServiceImpl=new DocumentServiceImpl();
-     //   String s= spider.get(url);
-     //    Document d=pd.parse(s,url);
-       //   dictionary.build();
-      //     documentServiceImpl.addDocument(d);
-        System.out.println(dictionary.search("中华"));
 
-        Document document=documentServiceImpl.getDocumentById(7);
-       // word.segment(document);
-        word.reverseSegment(document);
+        Iterator urlIt=urlArray.iterator();
+        int docId=1;
+        while (urlIt.hasNext()){
+            String url=(String) urlIt.next();
+            String s= spider.get(url);
+            Document document=pd.parse(s,url,docId);
+            documentServiceImpl.addDocument(document);
+            word.segment(document);
+            docId++;
+        }
+
+       // System.out.println(dictionary.search("中华"));
+       // Document document=documentServiceImpl.getDocumentById(7);
+       // word.reverseSegment(document);
     }
 }

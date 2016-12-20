@@ -10,4 +10,5 @@ import org.springframework.stereotype.Service;
 public interface DocumentService {
     void addDocument(Document document);
     Document getDocumentById(int id);
+    Document getDocumentByUrl(String url);
 }

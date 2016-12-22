@@ -24,12 +24,12 @@ public class App
     public static void main( String[] args )
     {
         ArrayList<String> urlArray=new ArrayList<String> ();
+        urlArray.add("https://www.zhihu.com/question/53542412/answer/137031732");
         urlArray.add("http://news.ifeng.com/a/20161222/50458109_0.shtml");
-        urlArray.add("http://sy.house.ifeng.com/detail/2016_12_22/50965792_0.shtml");
+        urlArray.add("https://www.zhihu.com/question/40501921");
         urlArray.add("http://news.ifeng.com/a/20161222/50457394_0.shtml");
         urlArray.add("http://news.ifeng.com/a/20161220/50446200_0.shtml");
-    //    urlArray.add("");
-    //    urlArray.add("");
+        urlArray.add("http://sy.house.ifeng.com/detail/2016_12_22/50965792_0.shtml");
 
         ApplicationContext context = new ClassPathXmlApplicationContext("spring-spider-bean.xml");
         Spider spider = (Spider) context.getBean("spiderBean");
@@ -45,7 +45,7 @@ public class App
             String url=(String) urlIt.next();
             String s= spider.get(url);
             Document document=pd.parse(s,url,docId);
-   //         documentServiceImpl.addDocument(document);
+            documentServiceImpl.addDocument(document);
             word.segment(document);
             docId++;
         }

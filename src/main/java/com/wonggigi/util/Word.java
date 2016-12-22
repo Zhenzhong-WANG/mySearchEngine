@@ -42,7 +42,7 @@ public class Word {
     }
     private void inputFile(String input,int id){
         try{
-            File file = new File(".//InvertedFile//input.txt");
+            File file = new File(".//InvertedFile//input"+id+".txt");
             if (!file.exists()) {
                 file.createNewFile();
             }
@@ -86,7 +86,7 @@ public class Word {
         String title=document.getTitle();
         String content=getContentFile(document.getId());
         String input=title+"。"+content;
-        input=input.replaceAll(" |\\(|\\)","");
+        input=input.replaceAll("[\\]\\(\\)\\+\\[\\$\\?\\{\\}\\*\\|\\^\\&\\.]","");
 
         System.out.println(input);
         int i=input.length()-1;

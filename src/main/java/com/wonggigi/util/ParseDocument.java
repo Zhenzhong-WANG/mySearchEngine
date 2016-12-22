@@ -29,15 +29,15 @@ public class ParseDocument {
             FileWriter fw = new FileWriter(file.getAbsoluteFile(),true);
             BufferedWriter bw = new BufferedWriter(fw);
 
-            Pattern pattern = Pattern.compile("<p>(.*?)</p>");
-            Matcher matcher = pattern.matcher(documentStr);
-            String content="";
-            while (matcher.find( )) {
-                content=matcher.group(1);
-                System.out.println("1: "+content);
-                bw.write(content);
-                bw.newLine();
-            }
+
+            String content=documentStr.replaceAll("<script[^>]*?>.*?</script>","").replaceAll("<style[^>]*?>.*?</style>","");
+            content=content.replaceAll("<.*?>","");
+            content=content.replaceAll(" ","");
+
+            System.out.println(content);
+            bw.write(content);
+            bw.newLine();
+
             bw.close();
         } catch(IOException e){
             e.printStackTrace();
@@ -49,7 +49,7 @@ public class ParseDocument {
         String title="";
         if (matcher.find( )) {
             title=matcher.group(1);
-            System.out.println("1: "+title);
+          //  System.out.println("1: "+title);
         }
         Document d=new Document();
         String filePath=basePath+docId+".txt";

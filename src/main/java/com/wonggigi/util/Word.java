@@ -4,10 +4,7 @@ import com.wonggigi.entity.Document;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 
 /**
@@ -58,11 +55,37 @@ public class Word {
             e.printStackTrace();
         }
     }
-
+    private String getContentFile(int docId){
+        String result="";
+        String filePath=".//documents//"+docId+".txt";
+        try {
+            String encoding="GBK";
+            File file=new File(filePath);
+            if(file.isFile() && file.exists()){ //判断文件是否存在
+                InputStreamReader read = new InputStreamReader(
+                        new FileInputStream(file));//考虑到编码格式
+                BufferedReader bufferedReader = new BufferedReader(read);
+                String lineTxt = null;
+                while((lineTxt = bufferedReader.readLine()) != null){
+                   result+=lineTxt;
+                }
+                read.close();
+            }else{
+                System.out.println("找不到指定的文件");
+            }
+        } catch (Exception e) {
+            System.out.println("读取文件内容出错");
+            e.printStackTrace();
+        }
+        return  result;
+    }
     public void segment(Document document){
         ApplicationContext context = new ClassPathXmlApplicationContext("spring-spider-bean.xml");
         Dictionary dictionary=(Dictionary)context.getBean("dictionaryBean");
-        String input=document.getTitle();
+
+        String title=document.getTitle();
+        String content=getContentFile(document.getId());
+        String input=title+"。"+content;
         input=input.replaceAll(" |\\(|\\)","");
 
         System.out.println(input);

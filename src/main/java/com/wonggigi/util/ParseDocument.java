@@ -2,6 +2,10 @@ package com.wonggigi.util;
 
 import com.wonggigi.entity.Document;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,11 +14,36 @@ import java.util.regex.Pattern;
  */
 public class ParseDocument {
     private int id;
+    private String basePath=".//documents//";
     public  void setId(int id){
         this.id=id;
     }
-    public Document parse(String documentStr,String url,int docId){
 
+    private void  createFile(String filePath,String documentStr){
+        try{
+            File file = new File(filePath);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            FileWriter fw = new FileWriter(file.getAbsoluteFile(),true);
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            Pattern pattern = Pattern.compile("<p>(.*?)</p>");
+            Matcher matcher = pattern.matcher(documentStr);
+            String content="";
+            while (matcher.find( )) {
+                content=matcher.group(1);
+                System.out.println("1: "+content);
+                bw.write(content);
+                bw.newLine();
+            }
+            bw.close();
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+    public Document parse(String documentStr,String url,int docId){
         Pattern pattern = Pattern.compile("<title>(.*?)</title>");
         Matcher matcher = pattern.matcher(documentStr);
         String title="";
@@ -23,8 +52,9 @@ public class ParseDocument {
             System.out.println("1: "+title);
         }
         Document d=new Document();
-
-        d.setPath("D:\\coll");
+        String filePath=basePath+docId+".txt";
+        createFile(filePath,documentStr);
+        d.setPath(filePath);
         d.setTitle(title);
         d.setUrl(url);
         d.setId(docId);

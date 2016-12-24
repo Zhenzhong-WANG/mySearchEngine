@@ -7,6 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.io.*;
 
 
+
 /**
  * Created by Hanoi on 2016/12/18.
  */
@@ -22,7 +23,7 @@ public class Word {
         String result="";
         while (input.length()>0){
             if (dictionary.search(input.substring(i,input.length()))){
-                     System.out.println(input.substring(i,input.length())+"/");
+                System.out.println(input.substring(i,input.length())+"/");
                 result+=input.substring(i,input.length())+"/";
                 input=input.substring(0,i);
                 i=0;
@@ -86,7 +87,7 @@ public class Word {
         String title=document.getTitle();
         String content=getContentFile(document.getId());
         String input=title+"。"+content;
-        input=input.replaceAll("[\\]\\(\\)\\+\\[\\$\\?\\{\\}\\*\\|\\^\\&\\.]","");
+        input=input.replaceAll("[\\]\\(\\)\\+\\[\\$\\?\\{\\}\\*\\|\\^\\&\\.\\t\\n\\r\\s]","");
 
         System.out.println(input);
         int i=input.length()-1;

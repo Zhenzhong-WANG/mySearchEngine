@@ -14,12 +14,12 @@ import java.util.regex.Pattern;
  */
 public class ParseDocument {
     private int id;
-    private String basePath=".//documents//";
+    private static String basePath=".//documents//";
     public  void setId(int id){
         this.id=id;
     }
 
-    private void  createFile(String filePath,String documentStr){
+    private static void createFile(String filePath,String documentStr){
         try{
             File file = new File(filePath);
             if (!file.exists()) {
@@ -30,11 +30,11 @@ public class ParseDocument {
             BufferedWriter bw = new BufferedWriter(fw);
 
 
-            String content=documentStr.replaceAll("<script[^>]*?>.*?</script>","").replaceAll("<style[^>]*?>.*?</style>","");
+            String content=documentStr.replaceAll("<script[^>]*?>.*?</script>","").replaceAll("<style[^>]*?>.*?</style>","").replaceAll("<!--[^-]*?-->","");
             content=content.replaceAll("<.*?>","");
-            content=content.replaceAll(" ","");
+            content=content.replaceAll("[\\]\\(\\)\\+\\[\\$\\?\\{\\}\\*\\|\\^\\&\\.\\t\\n\\r\\s]","");
 
-            System.out.println(content);
+            System.out.println("content: "+content);
             bw.write(content);
             bw.newLine();
 
@@ -43,7 +43,7 @@ public class ParseDocument {
             e.printStackTrace();
         }
     }
-    public Document parse(String documentStr,String url,int docId){
+    public static Document parse(String documentStr,String url,int docId){
         Pattern pattern = Pattern.compile("<title>(.*?)</title>");
         Matcher matcher = pattern.matcher(documentStr);
         String title="";

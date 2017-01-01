@@ -5,4 +5,7 @@
 /dictionary347
 /InvertedFile
 /BuildInvertedIndex/target
+/BuildInvertedIndex/MapReduce/input
+/BuildInvertedIndex/MapReduce/out*
+/BuildInvertedIndex/MapReduce/.idea
 /documents

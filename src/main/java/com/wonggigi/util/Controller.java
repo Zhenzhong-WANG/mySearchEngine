@@ -16,7 +16,6 @@ import java.util.Hashtable;
 public class Controller {
     private ArrayList<String> unvisitUrl=new ArrayList<String>();
     private Hashtable<String,Integer> hashtable=new Hashtable<String,Integer>();
-
     private int threadNum=10;
     private int docId=0;
     private void genePRmatrix(int id,ArrayList<Integer> linkList){

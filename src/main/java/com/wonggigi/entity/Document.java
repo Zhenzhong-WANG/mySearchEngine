@@ -1,5 +1,7 @@
 package com.wonggigi.entity;
 
+import java.util.ArrayList;
+
 /**
  * Created by Hanoi on 2016/12/14.
  */
@@ -7,8 +9,9 @@ public class Document {
 
     private String url;
     private String title;
-    private String path;
+   private String path;
     private int id;
+    private ArrayList<String> link;
 
     public int getId() {
         return id;
@@ -33,11 +36,20 @@ public class Document {
         this.path = path;
     }
 
+
     public void setUrl(String url) {
         this.url = url;
     }
 
     public String getUrl() {
         return url;
+    }
+
+    public ArrayList<String> getLink() {
+        return link;
+    }
+
+    public void setLink(ArrayList<String> link) {
+        this.link = link;
     }
 }

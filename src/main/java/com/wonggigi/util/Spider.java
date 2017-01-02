@@ -45,7 +45,7 @@ public class Spider {
                     if (matcher.find( )) {
                         charset = matcher.group(1);
                     }
-
+                  //  if (response.getStatusLine()!=)
                     System.out.println(response.getStatusLine()+" Charset :"+charset);
 
                     result = readResponse(entity,charset);
@@ -53,6 +53,7 @@ public class Spider {
             } finally {
                 httpclient.close();
                 response.close();
+
             }
         }catch (Exception e){
             e.printStackTrace();

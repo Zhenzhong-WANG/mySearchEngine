@@ -9,7 +9,8 @@ public class Document {
 
     private String url;
     private String title;
-   private String path;
+    private String path;
+    private String content;
     private int id;
     private ArrayList<String> link;
 
@@ -47,6 +48,14 @@ public class Document {
 
     public ArrayList<String> getLink() {
         return link;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public void setLink(ArrayList<String> link) {

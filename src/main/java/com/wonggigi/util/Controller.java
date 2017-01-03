@@ -37,15 +37,12 @@ public class Controller {
         }
     }
     public void start(){
-    //    unvisitUrl.add("https://tieba.baidu.com/index.html");
-    //   unvisitUrl.add("http://www.ifeng.com/");
-      //  unvisitUrl.add("http://www.sina.com.cn/");
-   //     unvisitUrl.add("http://www.qq.com/");
-//        unvisitUrl.add("https://www.zhihu.com/explore");
+        unvisitUrl.add("https://tieba.baidu.com/index.html");
+        unvisitUrl.add("http://www.ifeng.com/");
+        unvisitUrl.add("http://www.sina.com.cn/");
+        unvisitUrl.add("http://www.qq.com/");
+        unvisitUrl.add("https://www.zhihu.com/explore");
 
-        for (int i=0;i<unvisitUrl.size();i++){
-            hashtable.put(unvisitUrl.get(i),getDocId());
-        }
 
         for (int i=0;i<threadNum;i++){
             Thread t = new Thread(new Runnable() {
@@ -53,29 +50,31 @@ public class Controller {
                     while (true){
                         String url=getUrl();
                         if (url=="")break;
-                        int docid=hashtable.get(url);
-                        if (docid>40)break;
-                        String s=Spider.get(url);
-                        Document document=ParseDocument.parse(s,url,docid);
+                        String documentStr=Spider.get(url);
+                        Document document=ParseDocument.parse(documentStr,url);
+                        String content=document.getContent();
+                        if (content.length()>220&&!hashtable.containsKey(url)){
+                            int docid=DispatchDocId();
+                            if (docid>220)break;
+                            hashtable.put(url,docid);
+                            System.out.println(docid+" , "+url+content);
+                            ParseDocument.createFile(document,docid);
+                            ArrayList<String> linkList=document.getLink();
 
-                        ArrayList<String> link=document.getLink();
-                        ArrayList<Integer> linkList=new ArrayList<Integer>();
-                        for (int j=0;j<link.size();j++){
-                            String tempUrl=link.get(j);
-                            if (!hashtable.containsKey(tempUrl)){
-                                hashtable.put(tempUrl,getDocId());
-                                unvisitUrl.add(tempUrl);
+                            for (int j=0;j<linkList.size();j++){
+                                String link=linkList.get(j);
+                                if (!hashtable.containsKey(link)) {
+                                    unvisitUrl.add(link);
+                                }
                             }
-                            linkList.add(hashtable.get(tempUrl));
                         }
-                        genePRmatrix(docid,linkList);
                     }
                 }
             });
             t.start();
         }
     }
-    public synchronized int getDocId(){
+    public synchronized int DispatchDocId(){
         return docId++;
     }
     public synchronized String getUrl(){

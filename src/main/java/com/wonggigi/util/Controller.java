@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Set;
 
 /**
  * Created by handle on 17-1-1.
@@ -16,31 +17,35 @@ import java.util.Hashtable;
 public class Controller {
     private ArrayList<String> unvisitUrl=new ArrayList<String>();
     private Hashtable<String,Integer> hashtable=new Hashtable<String,Integer>();
+    private Hashtable<String,String > parentPageHashtable=new Hashtable<String, String>();
     private int threadNum=10;
     private int docId=0;
-    private void genePRmatrix(int id,ArrayList<Integer> linkList){
-        try{
-            File file = new File(".//PRmatrix//PRmatrix.txt");
+    private void geneTransferMatrix(){
+        try {
+            Set<String> keys=parentPageHashtable.keySet();
+            File file = new File(".//TransferMatrix//TransferMatrix.txt");
             if (!file.exists()) {
                 file.createNewFile();
             }
             FileWriter fw = new FileWriter(file.getAbsoluteFile(),true);
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(id+"/");
-            for (int i=0;i<linkList.size();i++){
-                bw.write(linkList.get(i)+" ");
+            for (String key:keys){
+                if (hashtable.get(key)!=null){
+                    bw.write(hashtable.get(key)+" "+parentPageHashtable.get(key));
+                    bw.newLine();
+                }
             }
-            bw.newLine();
             bw.close();
         } catch(IOException e){
             e.printStackTrace();
         }
     }
-    public void start(){
-        unvisitUrl.add("https://tieba.baidu.com/index.html");
-        unvisitUrl.add("http://www.ifeng.com/");
-        unvisitUrl.add("http://www.sina.com.cn/");
-        unvisitUrl.add("http://www.qq.com/");
+
+    public void start()  throws InterruptedException{
+     //   unvisitUrl.add("https://tieba.baidu.com/index.html");
+     //   unvisitUrl.add("http://www.ifeng.com/");
+     //   unvisitUrl.add("http://www.sina.com.cn/");
+     //   unvisitUrl.add("http://www.qq.com/");
         unvisitUrl.add("https://www.zhihu.com/explore");
 
 
@@ -55,16 +60,23 @@ public class Controller {
                         String content=document.getContent();
                         if (content.length()>220&&!hashtable.containsKey(url)){
                             int docid=DispatchDocId();
-                            if (docid>220)break;
+                            if (docid>20)break;
                             hashtable.put(url,docid);
                             System.out.println(docid+" , "+url+content);
                             ParseDocument.createFile(document,docid);
-                            ArrayList<String> linkList=document.getLink();
 
+                            ArrayList<String> linkList=document.getLink();
                             for (int j=0;j<linkList.size();j++){
                                 String link=linkList.get(j);
                                 if (!hashtable.containsKey(link)) {
                                     unvisitUrl.add(link);
+                                }
+                                if (parentPageHashtable.containsKey(link)){
+                                    String parentList=parentPageHashtable.get(link);
+                                    parentList=parentList+"/"+docid;
+                                    parentPageHashtable.put(link,parentList);
+                                }else{
+                                    parentPageHashtable.put(link,docid+"");
                                 }
                             }
                         }
@@ -72,7 +84,10 @@ public class Controller {
                 }
             });
             t.start();
+            t.join();
         }
+        System.out.println("Gene Transfer Matrix");
+        geneTransferMatrix();
     }
     public synchronized int DispatchDocId(){
         return docId++;

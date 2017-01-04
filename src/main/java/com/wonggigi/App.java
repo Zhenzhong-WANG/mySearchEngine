@@ -21,7 +21,7 @@ public class App
 {
     private DocumentService documentService;
 
-    public static void main( String[] args )
+    public static void main ( String[] args ) throws InterruptedException
     {
         ArrayList<String> urlArray=new ArrayList<String> ();
 

@@ -36,10 +36,10 @@ public class App
         ApplicationContext context = new ClassPathXmlApplicationContext("spring-spider-bean.xml");
         Spider spider = (Spider) context.getBean("spiderBean");
         Dictionary dictionary=(Dictionary)context.getBean("dictionaryBean");
-        //   dictionary.build();
-        Word word=(Word)context.getBean("wordBean");
-        ParseDocument pd=(ParseDocument)context.getBean("parseDocumentBean");
-        DocumentServiceImpl documentServiceImpl=new DocumentServiceImpl();
+      //     dictionary.build();
+   //     Word word=(Word)context.getBean("wordBean");
+   //     ParseDocument pd=(ParseDocument)context.getBean("parseDocumentBean");
+    //    DocumentServiceImpl documentServiceImpl=new DocumentServiceImpl();
         Controller controller=new Controller();
         controller.start();
 /*

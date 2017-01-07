@@ -80,16 +80,16 @@ public class Word {
         }
         return  result;
     }
-    public void segment(Document document){
+    public void segment(Document document,int docid){
         ApplicationContext context = new ClassPathXmlApplicationContext("spring-spider-bean.xml");
         Dictionary dictionary=(Dictionary)context.getBean("dictionaryBean");
 
         String title=document.getTitle();
-        String content=getContentFile(document.getId());
+        String content=getContentFile(docid);
         String input=title+"。"+content;
-        input=input.replaceAll("[\\]\\(\\)\\+\\[\\$\\?\\{\\}\\*\\|\\^\\&\\.\\t\\n\\r\\s]","");
+        input=input.replaceAll("[\\]\\(\\)\\+\\[\\$\\?\\{\\}\\*\\|\\^\\&\\.\\t\\n\\r\\s\\\\]","");
 
-        System.out.println(input);
+      //  System.out.println(input);
         int i=input.length()-1;
         String result="";
         while (input.length()>0){
@@ -111,6 +111,6 @@ public class Word {
             }
         }
         //System.out.println("Doc Id:"+document.getId()+"  "+result);
-        inputFile(result,document.getId());
+        inputFile(result,docid);
     }
 }

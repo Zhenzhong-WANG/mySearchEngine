@@ -70,8 +70,9 @@ public class ParseDocument {
         }
 
         String content=documentStr.replaceAll("<script[^>]*?>.*?</script>","").replaceAll("<style[^>]*?>.*?</style>","").replaceAll("<!--[^-]*?-->","");
-        content=content.replaceAll("<.*?>","");
+        content=content.replaceAll("<.*?>|br|\\&lt|\\&amp|\\&gt|\\&quot|\\&bull","");
         content=content.replaceAll("[\\]\\(\\)\\+\\[\\$\\?\\{\\}\\*\\|\\^\\&\\.\\t\\n\\r\\s]","");
+
         d.setContent(content);
         d.setLink(link);
         d.setTitle(title);

@@ -13,7 +13,7 @@ public class Dictionary {
     private String englishFilePath=".//English.txt";
     private int mod=349;
     private void  inputFile(int fileId,String word){
-        System.out.println(word);
+       // System.out.println(fileId+" : "+word+","+word.length());
         try{
             File file = new File(".//dictionary//dictionary"+fileId+".txt");
 
@@ -74,17 +74,17 @@ public class Dictionary {
                 BufferedReader bufferedReader = new BufferedReader(read);
                 String lineTxt = null;
                 while((lineTxt = bufferedReader.readLine()) != null){
-                    lineTxt = lineTxt.replaceAll("\\d", " ");
-                    String words[]=lineTxt.split("-");
-                    for (int i=0;i<words.length;i++){
-                        if (hashtable.containsKey(words[i]))continue;
-                        else hashtable.put(words[i],true);
+                    Pattern pattern = Pattern.compile("[\u4e00-\u9fa5]+");
+                    Matcher matcher = pattern.matcher(lineTxt);
+                    while (matcher.find()){
+                        String str=matcher.group();
+                        if (hashtable.containsKey(str)||str.length()<=1)continue;
+                        else hashtable.put(str,true);
                         char code=' ';
-                        for (int j=0;j<words[i].length();j++){
-                            String str=words[i];
+                        for (int j=0;j<str.length();j++){
                             code+=str.charAt(j);
                         }
-                        inputFile(code%mod,words[i]);
+                        inputFile(code%mod,str);
                     }
                 }
                 read.close();
@@ -106,7 +106,7 @@ public class Dictionary {
                 while((lineTxt = bufferedReader.readLine()) != null){
                     String words[]=lineTxt.split(" ");
                     char code=' ';
-                    String str=words[0];
+                    String str=words[0].replaceAll("\\t\\n\\r\\s","");
                     for (int j=0;j<str.length();j++){
                         code+=str.charAt(j);
                     }

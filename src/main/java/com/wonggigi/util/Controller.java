@@ -19,7 +19,7 @@ import java.util.Set;
 public class Controller {
     private ArrayList<String> unvisitUrl=new ArrayList<String>();
     private Hashtable<String,Integer> hashtable=new Hashtable<String,Integer>();
-    private Hashtable<String,String > parentPageHashtable=new Hashtable<String, String>();
+    private Hashtable<String,ArrayList<Integer>> parentPageHashtable=new Hashtable<String,ArrayList<Integer>>();
     private int threadNum=3;
     private int limitNum=50;
     private int docId=0;
@@ -34,7 +34,11 @@ public class Controller {
             BufferedWriter bw = new BufferedWriter(fw);
             for (String key:keys){
                 if (hashtable.get(key)!=null){
-                    bw.write(hashtable.get(key)+" "+parentPageHashtable.get(key));
+                    ArrayList<Integer> arrayList=parentPageHashtable.get(key);
+                    bw.write(hashtable.get(key)+" ");
+                    for (int i=0;i<arrayList.size();i++){
+                        bw.write(arrayList.get(i)+"/");
+                    }
                     bw.newLine();
                 }
             }
@@ -68,7 +72,7 @@ public class Controller {
                             int docid=DispatchDocId();
                             if (docid>limitNum)break;
                             hashtable.put(url,docid);
-                            System.out.println(docid+" , "+url+content);
+                            System.out.println(docid+" , "+url+" : "+content);
                             ParseDocument.createFile(document,docid);
                             word.segment(document,docid);
                             ArrayList<String> linkList=document.getLink();
@@ -78,21 +82,22 @@ public class Controller {
                                     unvisitUrl.add(link);
                                 }
                                 if (parentPageHashtable.containsKey(link)){
-                                    String parentList=parentPageHashtable.get(link);
-                                    parentList=parentList+"/"+docid;
+                                    ArrayList<Integer> parentList=parentPageHashtable.get(link);
+                                    if (parentList.indexOf(docid)==-1)
+                                        parentList.add(docid);
                                     parentPageHashtable.put(link,parentList);
                                 }else{
-                                    parentPageHashtable.put(link,docid+"");
+                                    ArrayList<Integer> parentList=new ArrayList<Integer>();
+                                    parentList.add(docid);
+                                    parentPageHashtable.put(link,parentList);
                                 }
                             }
                         }
                     }
                 }
             });
-
             threadCrawler.start();
             threadCrawler.join();
-
         }
         System.out.println("Gene Transfer Matrix");
         geneTransferMatrix();

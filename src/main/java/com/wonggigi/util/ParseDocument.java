@@ -57,7 +57,7 @@ public class ParseDocument {
         ArrayList<String> link=new ArrayList<String>();
         while (matcher.find()&&i<30){
             String tempLink=matcher.group(1);
-            Pattern tempPattern=Pattern.compile("mailto:|:\\d|\\.png|javascript:|\\.xml|\\.ico|\\.css|\\.svg|\\+|>|\\.jpg|\\.apk|\\.gif|\\{|##");
+            Pattern tempPattern=Pattern.compile("mailto:|:\\d|\\.png|javascript:|\\.xml|\\.ico|\\.css|\\.svg|\\+|>|\\.jpg|\\.apk|\\.gif|\\{|##|\\.pdf");
             Matcher tempMatcher=tempPattern.matcher(tempLink);
             if ((!tempMatcher.find())&&tempLink.length()>2){
                 if (tempLink.indexOf(":")==-1)

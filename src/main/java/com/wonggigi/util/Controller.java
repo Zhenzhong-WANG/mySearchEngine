@@ -26,6 +26,7 @@ public class Controller {
     private void geneTransferMatrix(){
         try {
             Set<String> keys=parentPageHashtable.keySet();
+            Hashtable<String,String> tempHashtable=new Hashtable<String, String>();
             File file = new File(".//TransferMatrix//TransferMatrix.txt");
             if (!file.exists()) {
                 file.createNewFile();
@@ -35,12 +36,22 @@ public class Controller {
             for (String key:keys){
                 if (hashtable.get(key)!=null){
                     ArrayList<Integer> arrayList=parentPageHashtable.get(key);
-                    bw.write(hashtable.get(key)+" ");
                     for (int i=0;i<arrayList.size();i++){
-                        bw.write(arrayList.get(i)+"/");
+                        String tempKey=arrayList.get(i)+"";
+                        if (!tempHashtable.containsKey(tempKey))
+                            tempHashtable.put(tempKey,hashtable.get(key)+"");
+                        else{
+                            String tempList=tempHashtable.get(tempKey);
+                            tempList=tempList+"/"+hashtable.get(key);
+                            tempHashtable.put(tempKey,tempList);
+                        }
                     }
-                    bw.newLine();
                 }
+            }
+            keys=tempHashtable.keySet();
+            for (String key:keys){
+                bw.write(key+" "+tempHashtable.get(key));
+                bw.newLine();
             }
             bw.close();
         } catch(IOException e){

@@ -12,8 +12,8 @@ import java.io.*;
  * Created by Hanoi on 2016/12/18.
  */
 public class Word {
-    private int maxWordLength=5;
-    public void reverseSegment(Document document){
+    private static int maxWordLength=5;
+    public static void reverseSegment(Document document){
         ApplicationContext context = new ClassPathXmlApplicationContext("spring-spider-bean.xml");
         Dictionary dictionary=(Dictionary)context.getBean("dictionaryBean");
         String input=document.getTitle();
@@ -41,7 +41,7 @@ public class Word {
         }
         System.out.println(result);
     }
-    private void inputFile(String input,int id){
+    private static void inputFile(String input,int id){
         try{
             File file = new File(".//InvertedFile//input"+id+".txt");
             if (!file.exists()) {
@@ -56,7 +56,7 @@ public class Word {
             e.printStackTrace();
         }
     }
-    private String getContentFile(int docId){
+    private static String getContentFile(int docId){
         String result="";
         String filePath=".//documents//"+docId+".txt";
         try {
@@ -80,7 +80,7 @@ public class Word {
         }
         return  result;
     }
-    public void segment(Document document,int docid){
+    public static void segment(Document document,int docid){
         ApplicationContext context = new ClassPathXmlApplicationContext("spring-spider-bean.xml");
         Dictionary dictionary=(Dictionary)context.getBean("dictionaryBean");
 

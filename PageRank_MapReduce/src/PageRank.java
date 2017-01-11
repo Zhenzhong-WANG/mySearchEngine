@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.util.Hashtable;
+import java.util.Set;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -10,12 +12,14 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class PageRank {
+    private static Hashtable<String,String> hashtable=new Hashtable<>();
     public static class PageRankMapper extends Mapper<Object, Text, Text, Text>{
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
             String[] lines=value.toString().split("\n");
             for(String line:lines){
                 Double probability=Double.parseDouble(line.split("/")[0]);
                 String docId=line.split("/")[1];
+                hashtable.put(docId,line.split("/")[2]);
                 String[] outLinks=line.split("/")[2].split(",");
                 int outLinkNum=outLinks.length;
                 context.write(new Text(docId),new Text("0.0"));
@@ -37,7 +41,11 @@ public class PageRank {
                 sum+=Double.parseDouble(pro.toString());
             }
             Double probabilty=factor*sum+(1-factor)/num;
-            context.write(key,new Text(Double.toString(probabilty)));
+
+            String vector=key.toString()+"/"+hashtable.get(key.toString());
+          //  System.out.println(key+":"+probabilty);
+            context.write(new Text(Double.toString(probabilty)),new Text(vector));
+           // context.write(key,new Text(Double.toString(probabilty)));
         }
     }
 
@@ -52,7 +60,7 @@ public class PageRank {
             Job job = Job.getInstance(conf, "PageRank");
             job.setJarByClass(PageRank.class);
             job.setMapperClass(PageRankMapper.class);
-            job.setCombinerClass(PageRankReducer.class);
+          //  job.setCombinerClass(PageRankReducer.class);
             job.setReducerClass(PageRankReducer.class);
 
             job.setOutputKeyClass(Text.class);

@@ -1,10 +1,11 @@
 import java.io.IOException;
+import java.util.Hashtable;
+import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.HashMap;
+
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -13,6 +14,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class BuildIndex {
+   // private static Hashtable<Text,Integer> hashtable = new Hashtable<>();
     public static class IndexMapper extends Mapper<Object, Text, Text, Text>{
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
             StringTokenizer itr = new StringTokenizer(value.toString());
@@ -28,21 +30,27 @@ public class BuildIndex {
     }
 
     public static class IndexReducer extends Reducer<Text,Text,Text,Text> {
-        private Text result = new Text();
-
         public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
+            Hashtable<Text,Integer> hashtable = new Hashtable<>();
             String documenmts = "";
-            HashMap<Text,IntWritable> map = new HashMap<Text,IntWritable>();
+            int docF=0;
             for (Text val : values) {
-                if (map.containsKey(val)){
-                    continue;
+                if (hashtable.containsKey(val)){
+                    int wordF=hashtable.get(val);
+                    wordF++;
+                    hashtable.put(new Text(val.toString()),wordF);
                 }else{
-                    map.put(val,new IntWritable(1));
-                    documenmts =  val.toString()+"/"+documenmts;
+                    hashtable.put(new Text(val.toString()),1);
+                    docF++;
                 }
             }
-            result.set(documenmts);
-            context.write(key, result);
+
+            Set<Text> keyset=hashtable.keySet();
+            for (Text docKey:keyset){
+                documenmts=docKey.toString()+","+hashtable.get(docKey)+"/"+documenmts;
+            }
+            System.out.println(key+" is ok");
+            context.write(new Text(key.toString()+"\t"+docF), new Text(documenmts));
         }
     }
 
@@ -52,7 +60,7 @@ public class BuildIndex {
         Job job = Job.getInstance(conf, "Inverted Index");
         job.setJarByClass(BuildIndex.class);
         job.setMapperClass(IndexMapper.class);
-        job.setCombinerClass(IndexReducer.class);
+       // job.setCombinerClass(IndexReducer.class);
         job.setReducerClass(IndexReducer.class);
 
         job.setOutputKeyClass(Text.class);

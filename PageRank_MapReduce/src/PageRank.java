@@ -17,10 +17,10 @@ public class PageRank {
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
             String[] lines=value.toString().split("\n");
             for(String line:lines){
-                Double probability=Double.parseDouble(line.split("/")[0]);
-                String docId=line.split("/")[1];
-                hashtable.put(docId,line.split("/")[2]);
-                String[] outLinks=line.split("/")[2].split(",");
+                Double probability=Double.parseDouble(line.split("\\s|\\t")[0]);
+                String docId=line.split("\\s|\\t")[1];
+                hashtable.put(docId,line.split("\\s|\\t")[2]);
+                String[] outLinks=line.split("\\s|\\t")[2].split(",");
                 int outLinkNum=outLinks.length;
                 context.write(new Text(docId),new Text("0.0"));
                 for (String link:outLinks){
@@ -41,11 +41,8 @@ public class PageRank {
                 sum+=Double.parseDouble(pro.toString());
             }
             Double probabilty=factor*sum+(1-factor)/num;
-
-            String vector=key.toString()+"/"+hashtable.get(key.toString());
-          //  System.out.println(key+":"+probabilty);
+            String vector=key.toString()+" "+hashtable.get(key.toString());
             context.write(new Text(Double.toString(probabilty)),new Text(vector));
-           // context.write(key,new Text(Double.toString(probabilty)));
         }
     }
 
@@ -53,7 +50,8 @@ public class PageRank {
         double factor=0.80;
         String input="/home/Projects/SearchEngine/PageRank_MapReduce/input";
         String output="/home/Projects/SearchEngine/PageRank_MapReduce/output";
-        for(int i=0;i<1;i++){
+        int i=0;
+        for(i=0;i<6;i++){
             Configuration conf = new Configuration();
             conf.set("factor",String.valueOf(factor));
             conf.set("num","4");
@@ -71,6 +69,15 @@ public class PageRank {
             input=output+i+"";
             job.waitForCompletion(true);
         }
+        /*
+        System.out.println(i);
+        for(int j=i-3;j>=0;j--){
+            Configuration conf=new Configuration();
+            Path path=new Path(output+"j");
+            FileSystem fs=path.getFileSystem(conf);
+            fs.delete(path,true);
+        }
+*/
     }
 }
 

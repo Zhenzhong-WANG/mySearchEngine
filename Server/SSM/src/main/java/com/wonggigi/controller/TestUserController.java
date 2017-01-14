@@ -2,7 +2,9 @@ package com.wonggigi.controller;
 
 import com.wonggigi.entity.TestUser;
 import com.wonggigi.service.TestUserService;
+import com.wonggigi.util.InvertedIndex;
 import com.wonggigi.util.ObjectProperty;
+import com.wonggigi.util.Word;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,33 +34,14 @@ public class TestUserController {
         return "index";
     }
 
-    @RequestMapping(value="/userlist.action",method = RequestMethod.GET)
+    @RequestMapping(value="/search.action",method = RequestMethod.GET)
     @ResponseBody
-    public List<TestUser> getList(){
-        System.out.println("GET ALL USER ");
-        return testUserService.userList();
-    }
-
-    @RequestMapping(value="/update.action",method = RequestMethod.POST)
-    @ResponseBody
-    public void updateUser(@RequestBody TestUser testUser){
-        System.out.println("UPDATE USER "+testUser.getUsername());
-        testUserService.updateUser(testUser);
-    }
-
-    @RequestMapping(value="/delete.action",method = RequestMethod.POST)
-    @ResponseBody
-    public void deleteUser(@RequestBody TestUser testUser){
-        System.out.println("DELETE USER "+testUser.getUsername());
-
-        testUserService.deleteUser(testUser);
-    }
-
-    @RequestMapping(value="/adduser.action",method = RequestMethod.POST)
-    @ResponseBody
-    public void addUser(@RequestBody TestUser testUser){
-        System.out.println("ADD  USER "+testUser.getUsername());
-        objectProperty.getProperty(testUser);
-        testUserService.addUser(testUser);
+    public String search(HttpServletRequest request){
+        String query=request.getParameter("query");
+        System.out.println("Query is "+query);
+        String segmentWord=Word.segment(query);
+        System.out.println(segmentWord);
+        //ArrayList<Integer> docList=InvertedIndex.getDocList(segmentWord);
+        return "success";
     }
 }

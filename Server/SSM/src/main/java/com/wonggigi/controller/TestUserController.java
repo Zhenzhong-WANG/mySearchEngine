@@ -25,9 +25,9 @@ public class TestUserController {
     @Autowired
     private ObjectProperty objectProperty;
 
-    @RequestMapping(value="/list",method = RequestMethod.GET)
+    @RequestMapping(value="/index",method = RequestMethod.GET)
     public String getListPage(){
-        return "list";
+        return "index";
     }
 
     @RequestMapping(value="/userlist.action",method = RequestMethod.GET)

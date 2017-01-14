@@ -1,0 +1,37 @@
+body{
+    background-image: url("../img/bg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.input{
+    height: 46px;
+    width: 400px;
+    padding: 2px 8px 2px 8px;
+    outline: none;
+    border: none;
+    font-size: 20px;
+    margin-left: 18px;
+}
+.input-title{
+    color: white;
+    font-size: 44px;
+    font-family: "Segoe UI",Segoe,Tahoma,Arial,Verdana,sans-serif;
+}
+.input-container{
+    position: absolute;
+    top: 18%;
+    left: 9%;
+}
+
+.input-button{
+    background-color: #0c8484;
+    display: inline-block;
+    background-image: url("../img/button.png");
+    background-position: 8px 8px;
+    width: 50px;
+    height: 50px;
+    background-repeat: no-repeat;
+}
+.input-container span{
+    float: left;
+}

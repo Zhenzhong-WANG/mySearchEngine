@@ -3,6 +3,7 @@ package com.wonggigi.controller;
 import com.wonggigi.entity.Index;
 import com.wonggigi.service.IndexService;
 import com.wonggigi.util.ObjectProperty;
+import com.wonggigi.util.ThreeTuple;
 import com.wonggigi.util.Word;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 
 /**
@@ -34,13 +36,55 @@ public class TestUserController {
     @RequestMapping(value="/search.action",method = RequestMethod.GET)
     @ResponseBody
     public String search(HttpServletRequest request){
+        long startTime=System.currentTimeMillis();
         String query=request.getParameter("query");
-        System.out.println("Query is "+query);
-        String segmentWord=Word.segment(query);
-        System.out.println(segmentWord);
-        Index index=indexService.getInvertedIndex("上都");
-        System.out.println(index.getWord()+" : "+index.getDf()+" : "+index.getList());
-        //ArrayList<Integer> docList=InvertedIndex.getDocList(segmentWord);
+        String []words= Word.segment(query).split("/");
+        ArrayList<Index> arrayListIndex=new ArrayList<Index>();
+        for (String word:words){
+            arrayListIndex.add(indexService.getInvertedIndex(word));
+        }
+
+        ArrayList<ThreeTuple> threeTupleArrayList=new ArrayList<ThreeTuple>();
+        for (int i=0;i<arrayListIndex.size();i++){
+            Index index=arrayListIndex.get(i);
+            String list=index.getList();
+            String[] terms=list.split("/");
+            HashMap<Integer,Integer> hashMap=new HashMap<Integer, Integer>();
+            for (String term:terms){
+                String[] tempTerm=term.split(",");
+                hashMap.put(Integer.parseInt(tempTerm[0]),Integer.parseInt(tempTerm[1]));
+            }
+            ThreeTuple<String,Integer,HashMap<Integer,Integer>> twoTuple=new ThreeTuple<String, Integer, HashMap<Integer, Integer>>(index.getWord(),index.getDf(),hashMap);
+            threeTupleArrayList.add(twoTuple);
+        }
+
+        Set<Integer> intersectionSet=new HashSet<Integer>();
+        for (int i=0;i<threeTupleArrayList.size();i++){
+            HashMap<Integer,Integer> hashMap=(HashMap<Integer, Integer>) threeTupleArrayList.get(i).third;
+            Set<Integer> keys=hashMap.keySet();
+            if (i==0){
+                for(Integer key:keys){
+                    intersectionSet.add(key);
+                }
+            }
+            else {
+                Iterator it=intersectionSet.iterator();
+                while (it.hasNext()){
+                    Integer docid=(Integer)it.next();
+                    if (!hashMap.containsKey(docid)){
+                        intersectionSet.remove(docid);
+                        it=intersectionSet.iterator();
+                    }
+                }
+            }
+        }
+
+        Iterator it=intersectionSet.iterator();
+        while (it.hasNext()){
+            Integer docid=(Integer)it.next();
+            System.out.println(docid);
+        }
+        System.out.println("执行耗时 : "+(System.currentTimeMillis()-startTime)/1000f+" 秒 ");
         return "success";
     }
 }

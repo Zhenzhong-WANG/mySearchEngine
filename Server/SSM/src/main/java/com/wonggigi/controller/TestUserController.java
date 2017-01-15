@@ -1,21 +1,18 @@
 package com.wonggigi.controller;
 
-import com.wonggigi.entity.TestUser;
-import com.wonggigi.service.TestUserService;
-import com.wonggigi.util.InvertedIndex;
+import com.wonggigi.entity.Index;
+import com.wonggigi.service.IndexService;
 import com.wonggigi.util.ObjectProperty;
 import com.wonggigi.util.Word;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * Created by Hanoi on 2016/12/9.
@@ -25,7 +22,7 @@ import java.util.List;
 public class TestUserController {
 
     @Autowired
-    private TestUserService testUserService;
+    private IndexService indexService;
     @Autowired
     private ObjectProperty objectProperty;
 
@@ -41,6 +38,8 @@ public class TestUserController {
         System.out.println("Query is "+query);
         String segmentWord=Word.segment(query);
         System.out.println(segmentWord);
+        Index index=indexService.getInvertedIndex("上都");
+        System.out.println(index.getWord()+" : "+index.getDf()+" : "+index.getList());
         //ArrayList<Integer> docList=InvertedIndex.getDocList(segmentWord);
         return "success";
     }

@@ -34,7 +34,6 @@ public class TestUserController {
     }
 
     @RequestMapping(value="/search.action",method = RequestMethod.GET)
-    @ResponseBody
     public String search(HttpServletRequest request){
         long startTime=System.currentTimeMillis();
         String query=request.getParameter("query");
@@ -79,12 +78,31 @@ public class TestUserController {
             }
         }
 
-        Iterator it=intersectionSet.iterator();
-        while (it.hasNext()){
-            Integer docid=(Integer)it.next();
-            System.out.println(docid);
+        ArrayList<ThreeTuple> intersectionIndexList=new ArrayList<ThreeTuple>();
+        for (int i=0;i<threeTupleArrayList.size();i++){
+            HashMap<Integer,Integer> hashMap=new HashMap<Integer, Integer>();
+            ThreeTuple<String,Integer,HashMap<Integer,Integer>> threeTuple=threeTupleArrayList.get(i);
+            Iterator it=intersectionSet.iterator();
+            while (it.hasNext()){
+                Integer docid=(Integer)it.next();
+                hashMap.put(docid,(threeTuple.third).get(docid));
+            }
+            ThreeTuple<String,Integer,HashMap<Integer,Integer>> temptuple=new ThreeTuple<String, Integer, HashMap<Integer, Integer>>(threeTuple.first,threeTuple.second,hashMap);
+            intersectionIndexList.add(temptuple);
         }
+
+        threeTupleArrayList.clear();
+        for (int i=0;i<intersectionIndexList.size();i++){
+            System.out.println(intersectionIndexList.get(i).first+" df:"+intersectionIndexList.get(i).second);
+            HashMap<Integer,Integer> hashMap=(HashMap<Integer, Integer>) intersectionIndexList.get(i).third;
+            Set<Integer> keys=hashMap.keySet();
+            for(Integer key:keys){
+                System.out.print(key+","+hashMap.get(key)+" | ");
+            }
+            System.out.println();
+        }
+
         System.out.println("执行耗时 : "+(System.currentTimeMillis()-startTime)/1000f+" 秒 ");
-        return "success";
+        return "result";
     }
 }

@@ -26,6 +26,7 @@ body{
 .input-button{
     background-color: #0c8484;
     display: inline-block;
+    border: none;
     background-image: url("../img/button.png");
     background-position: 8px 8px;
     width: 50px;
@@ -33,5 +34,8 @@ body{
     background-repeat: no-repeat;
 }
 .input-container span{
+    float: left;
+}
+form,form input{
     float: left;
 }

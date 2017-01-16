@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Search</title>
     <link rel="stylesheet" type="text/css" href="./css/index.css" />
 </head>
 <body>
     <div class="input-container">
         <span class="input-title">Search</span>
-        <span class="input-wrap"><input class="input" type="text" id="input"/></span>
-        <span class="input-button" id="button"></span>
+        <form action="search.action" method="get">
+            <input class="input" type="text" name="query"/>
+            <input type="submit"  class="input-button" value=""/>
+        </form>
     </div>
     <script type="text/javascript" src="./js/index.js"></script>
 </body>

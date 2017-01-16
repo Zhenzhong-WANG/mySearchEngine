@@ -1,3 +1,4 @@
+/*
 (function () {
     var button=document.getElementById("button");
     button.onclick=function () {
@@ -15,4 +16,4 @@
         console.log(query.value);
         xhr.send();
     }
-})();
+})() */

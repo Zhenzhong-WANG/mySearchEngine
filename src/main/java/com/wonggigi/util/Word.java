@@ -14,15 +14,14 @@ import java.io.*;
 public class Word {
     private static int maxWordLength=5;
     public static void reverseSegment(Document document){
-        ApplicationContext context = new ClassPathXmlApplicationContext("spring-spider-bean.xml");
-        Dictionary dictionary=(Dictionary)context.getBean("dictionaryBean");
+
         String input=document.getTitle();
         input=input.replaceAll(" ","");
         System.out.println(input);
         int i=0;
         String result="";
         while (input.length()>0){
-            if (dictionary.search(input.substring(i,input.length()))){
+            if (Dictionary.search(input.substring(i,input.length()))){
                 System.out.println(input.substring(i,input.length())+"/");
                 result+=input.substring(i,input.length())+"/";
                 input=input.substring(0,i);
@@ -81,9 +80,6 @@ public class Word {
         return  result;
     }
     public static void segment(Document document,int docid){
-        ApplicationContext context = new ClassPathXmlApplicationContext("spring-spider-bean.xml");
-        Dictionary dictionary=(Dictionary)context.getBean("dictionaryBean");
-
         String title=document.getTitle();
         String content=getContentFile(docid);
         String input=title+"。"+content;
@@ -93,7 +89,7 @@ public class Word {
         int i=input.length()-1;
         String result="";
         while (input.length()>0){
-            if (i<maxWordLength&&dictionary.search(input.substring(0,i))){
+            if (i<maxWordLength&&Dictionary.search(input.substring(0,i))){
            //     System.out.println(input.substring(0,i)+"/");
                 result+=input.substring(0,i)+"/";
                 input=input.substring(i);
@@ -110,7 +106,7 @@ public class Word {
                 }
             }
         }
-        //System.out.println("Doc Id:"+document.getId()+"  "+result);
+       // System.out.println("Doc Id:"+document.getId()+"  "+result);
         inputFile(result,docid);
     }
 }

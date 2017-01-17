@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.util.Hashtable;
-import java.util.Set;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -20,7 +19,7 @@ public class PageRank {
                 Double probability=Double.parseDouble(line.split("\\s|\\t")[0]);
                 String docId=line.split("\\s|\\t")[1];
                 hashtable.put(docId,line.split("\\s|\\t")[2]);
-                String[] outLinks=line.split("\\s|\\t")[2].split(",");
+                String[] outLinks=line.split("\\s|\\t")[2].split("/");
                 int outLinkNum=outLinks.length;
                 context.write(new Text(docId),new Text("0.0"));
                 for (String link:outLinks){
@@ -47,11 +46,11 @@ public class PageRank {
     }
 
     public static void main(String[] args) throws Exception {
-        double factor=0.80;
+        double factor=0.85;
         String input="/home/Projects/SearchEngine/PageRank_MapReduce/input";
         String output="/home/Projects/SearchEngine/PageRank_MapReduce/output";
         int i=0;
-        for(i=0;i<6;i++){
+        for(i=0;i<5;i++){
             Configuration conf = new Configuration();
             conf.set("factor",String.valueOf(factor));
             conf.set("num","4");

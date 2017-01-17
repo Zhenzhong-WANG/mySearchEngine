@@ -9,10 +9,10 @@ import java.util.regex.Pattern;
  * Created by Hanoi on 2016/12/17.
  */
 public class Dictionary {
-    private String chineseFilePath=".//Chinese.txt";
-    private String englishFilePath=".//English.txt";
-    private int mod=349;
-    private void  inputFile(int fileId,String word){
+    private  static String chineseFilePath=".//Chinese.txt";
+    private static String englishFilePath=".//English.txt";
+    private static int mod=349;
+    private static void  inputFile(int fileId,String word){
        // System.out.println(fileId+" : "+word+","+word.length());
         try{
             File file = new File(".//dictionary//dictionary"+fileId+".txt");
@@ -28,7 +28,7 @@ public class Dictionary {
             e.printStackTrace();
         }
     }
-    public boolean search(String word){
+    public static boolean search(String word){
         char code=' ';
         for (int j=0;j<word.length();j++){
             code+=word.charAt(j);
@@ -63,7 +63,7 @@ public class Dictionary {
         }
         return  false;
     }
-    public void build(){
+    public static void build(){
         Hashtable<String,Boolean> hashtable=new Hashtable<String, Boolean>();
         try {
             String encoding="GBK";

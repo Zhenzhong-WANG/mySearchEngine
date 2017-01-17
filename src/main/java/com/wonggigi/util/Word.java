@@ -42,7 +42,7 @@ public class Word {
     }
     private static void inputFile(String input,int id){
         try{
-            File file = new File(".//InvertedFile//input"+id+".txt");
+            File file = new File(".//segmentDocments//input"+id+".txt");
             if (!file.exists()) {
                 file.createNewFile();
             }

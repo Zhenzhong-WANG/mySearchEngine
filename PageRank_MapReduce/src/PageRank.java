@@ -50,10 +50,10 @@ public class PageRank {
         String input="/home/Projects/SearchEngine/PageRank_MapReduce/input";
         String output="/home/Projects/SearchEngine/PageRank_MapReduce/output";
         int i=0;
-        for(i=0;i<5;i++){
+        for(i=0;i<20;i++){
             Configuration conf = new Configuration();
             conf.set("factor",String.valueOf(factor));
-            conf.set("num","4");
+            conf.set("num","100");
             Job job = Job.getInstance(conf, "PageRank");
             job.setJarByClass(PageRank.class);
             job.setMapperClass(PageRankMapper.class);

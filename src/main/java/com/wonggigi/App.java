@@ -22,7 +22,7 @@ public class App
     private static Hashtable<String,Integer> hashtable=new Hashtable<String,Integer>(); //url,docId
     private static Hashtable<String,ArrayList<Integer>> parentPageHashtable=new Hashtable<String,ArrayList<Integer>>(); //url indegreeDocs
     private static int threadNum=3;
-    private static int limitNum=20;
+    private static int limitNum=100;
     private static int docId=0;
 
     public static void main ( String[] args ) throws InterruptedException
@@ -43,9 +43,9 @@ public class App
                             if (docid>limitNum-1)break;
                             hashtable.put(url,docid);
                             System.out.println(docid+" , "+url+" : "+content);
-                            //ParseDocument.createFile(document,docid);
-                            //addToDb(document,docid);
-                            //Word.segment(document,docid);
+                            ParseDocument.createFile(document,docid);
+                            addToDb(document,docid);
+                            Word.segment(document,docid);
                             ArrayList<String> linkList=document.getLink();
                             for (int j=0;j<linkList.size();j++){
                                 String link=linkList.get(j);

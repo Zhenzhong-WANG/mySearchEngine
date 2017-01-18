@@ -80,7 +80,7 @@
         outp.println("<div class=\"header\">\n" +
                 "        <span class=\"input-title\">Search</span>\n" +
                 "        <form action=\"search.action\" method=\"get\">\n" +
-                "            <input class=\"input\" type=\"text\" name=\"query\"/>\n" +
+                "            <input id='input' class=\"input\" type=\"text\" name=\"query\"/>\n" +
                 "            <input type=\"submit\"  class=\"input-button\" value=\"\"/>\n" +
                 "        </form>\n" +
                 "    </div>");
@@ -92,7 +92,7 @@
         for (Document document:documentArrayList){
             outp.println(" <div class=\"item\">");
             outp.println("<p class=\"item-title\">\n" +
-                        "                <a href=\"\">"+document.getTitle()+"</a>\n" +
+                        "                <a href="+document.getUrl()+">"+document.getTitle()+"</a>\n" +
                         "            </p>");
             outp.println("<p class=\"item-content\">\n" +
                          document.getContent()+
@@ -128,5 +128,6 @@
                   <span>综合值:0.9821</span>
               </div>
           </div>-->
+    <script type="text/javascript" src="./js/index.js"></script>
 </body>
 </html>

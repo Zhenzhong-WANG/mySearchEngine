@@ -34,8 +34,7 @@ public class Word {
 
     public static String segment(String input){
         input=input.replaceAll("[\\]\\(\\)\\+\\[\\$\\?\\{\\}\\*\\|\\^\\&\\.\\t\\n\\r\\s\\\\]","");
-      //  System.out.println(input);
-        int i=input.length()-1;
+        int i=input.length();
         String result="";
         while (input.length()>0){
             if (i<maxWordLength&&Dictionary.search(input.substring(0,i))){

@@ -44,6 +44,7 @@ public class TestUserController {
         String query=request.getParameter("query");
         String []words= Word.segment(query).split("/");
         ArrayList<Index> arrayListIndex=new ArrayList<Index>();
+        ArrayList<Document> documentArrayList=new ArrayList<Document>();
         for (String word:words){
             arrayListIndex.add(indexService.getInvertedIndex(word));
         }
@@ -56,7 +57,8 @@ public class TestUserController {
             HashMap<Integer,Integer> hashMap=new HashMap<Integer, Integer>();
             for (String term:terms){
                 String[] tempTerm=term.split(",");
-                hashMap.put(Integer.parseInt(tempTerm[0]),Integer.parseInt(tempTerm[1]));
+                if (Integer.parseInt(tempTerm[0])!=0)
+                    hashMap.put(Integer.parseInt(tempTerm[0]),Integer.parseInt(tempTerm[1]));
             }
             ThreeTuple<String,Integer,HashMap<Integer,Integer>> twoTuple=new ThreeTuple<String, Integer, HashMap<Integer, Integer>>(index.getWord(),index.getDf(),hashMap);
             threeTupleArrayList.add(twoTuple);
@@ -96,7 +98,7 @@ public class TestUserController {
             intersectionIndexList.add(temptuple);
         }
 
-        ArrayList<Document> documentArrayList=new ArrayList<Document>();
+
         threeTupleArrayList.clear();
         if (intersectionIndexList.size()!=0){
             HashMap<Integer,Integer> hashMap=(HashMap<Integer, Integer>) intersectionIndexList.get(0).third;
@@ -109,10 +111,7 @@ public class TestUserController {
                 //System.out.println(key+","+hashMap.get(key));
             }
         }
-        /*
-        for (int i=0;i<intersectionIndexList.size();i++){
-            //System.out.println(intersectionIndexList.get(i).first+" df:"+intersectionIndexList.get(i).second);
-        }*/
+
 
         float duration=(System.currentTimeMillis()-startTime)/1000f;
         request.setAttribute("time",duration);

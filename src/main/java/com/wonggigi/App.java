@@ -22,7 +22,7 @@ public class App
     private static Hashtable<String,Integer> hashtable=new Hashtable<String,Integer>(); //url,docId
     private static Hashtable<String,ArrayList<Integer>> parentPageHashtable=new Hashtable<String,ArrayList<Integer>>(); //url indegreeDocs
     private static int threadNum=3;
-    private static int limitNum=100;
+    private static int limitNum=10;
     private static int docId=0;
 
     public static void main ( String[] args ) throws InterruptedException
@@ -128,10 +128,11 @@ public class App
             String url="jdbc:mysql://localhost:3306/SearchEngine?useUnicode=true&characterEncoding=UTF-8";    //JDBC的URL
             Connection conn;
             conn = DriverManager.getConnection(url,"root","908868432");
-            String sql = "INSERT INTO Documents VALUES(?,?)";
+            String sql = "INSERT INTO Documents VALUES(?,?,?)";
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1,id);;
             pst.setString(2,document.getUrl());
+            pst.setString(3,document.getTitle());
             pst.executeUpdate();
             conn.close();
         } catch (Exception e) {

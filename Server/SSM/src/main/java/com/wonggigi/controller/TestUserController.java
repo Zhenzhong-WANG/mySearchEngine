@@ -1,8 +1,11 @@
 package com.wonggigi.controller;
 
+import com.wonggigi.entity.Document;
 import com.wonggigi.entity.Index;
+import com.wonggigi.service.DocumentService;
 import com.wonggigi.service.IndexService;
 import com.wonggigi.util.ObjectProperty;
+import com.wonggigi.util.ReadDocument;
 import com.wonggigi.util.ThreeTuple;
 import com.wonggigi.util.Word;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,8 @@ public class TestUserController {
 
     @Autowired
     private IndexService indexService;
+    @Autowired
+    private DocumentService documentService;
     @Autowired
     private ObjectProperty objectProperty;
 
@@ -91,18 +96,27 @@ public class TestUserController {
             intersectionIndexList.add(temptuple);
         }
 
+        ArrayList<Document> documentArrayList=new ArrayList<Document>();
         threeTupleArrayList.clear();
-        for (int i=0;i<intersectionIndexList.size();i++){
-            System.out.println(intersectionIndexList.get(i).first+" df:"+intersectionIndexList.get(i).second);
-            HashMap<Integer,Integer> hashMap=(HashMap<Integer, Integer>) intersectionIndexList.get(i).third;
+        if (intersectionIndexList.size()!=0){
+            HashMap<Integer,Integer> hashMap=(HashMap<Integer, Integer>) intersectionIndexList.get(0).third;
             Set<Integer> keys=hashMap.keySet();
             for(Integer key:keys){
-                System.out.print(key+","+hashMap.get(key)+" | ");
+                Document document=documentService.getDocunmentURLById(key);
+                document.setPr(documentService.getDocunmentPRById(key));
+                document= ReadDocument.getContent(document);
+                documentArrayList.add(document);
+                //System.out.println(key+","+hashMap.get(key));
             }
-            System.out.println();
         }
+        /*
+        for (int i=0;i<intersectionIndexList.size();i++){
+            //System.out.println(intersectionIndexList.get(i).first+" df:"+intersectionIndexList.get(i).second);
+        }*/
 
-        System.out.println("执行耗时 : "+(System.currentTimeMillis()-startTime)/1000f+" 秒 ");
+        float duration=(System.currentTimeMillis()-startTime)/1000f;
+        request.setAttribute("time",duration);
+        request.setAttribute("list",documentArrayList);
         return "result";
     }
 }

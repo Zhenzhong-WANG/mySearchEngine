@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wonggigi.dao.DocumentDao">
+    <select id="getDocunmentURLById" resultType="Document" parameterType="int">
+        SELECT *
+        FROM Documents  WHERE id =(#{docid})
+    </select>
+    <select id="getDocunmentPRById" resultType="Double" parameterType="int">
+        SELECT probability
+        FROM PR  WHERE id =(#{docid})
+    </select>
+</mapper>

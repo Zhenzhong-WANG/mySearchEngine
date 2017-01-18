@@ -45,7 +45,7 @@ public class ParseDocument {
     }
     public static Document parse(String documentStr,String url){
         int i=0;
-        Pattern pattern = Pattern.compile("<title>(.*?)</title>");
+        Pattern pattern = Pattern.compile("<title[^>]*?>(.*?)</title>");
         Matcher matcher = pattern.matcher(documentStr);
         String title="";
         if (matcher.find( )) {

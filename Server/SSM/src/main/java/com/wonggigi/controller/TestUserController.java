@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
-
+import java.lang.Math;
 
 /**
  * Created by Hanoi on 2016/12/9.
@@ -25,6 +25,11 @@ import java.util.*;
 @Controller
 @RequestMapping(value = "/")
 public class TestUserController {
+    private int N=100;
+    private double k1=1.2;
+    private double k2=200.0;
+    private double b=0.75;
+    private double K=1.5;
 
     @Autowired
     private IndexService indexService;
@@ -102,13 +107,20 @@ public class TestUserController {
         threeTupleArrayList.clear();
         if (intersectionIndexList.size()!=0){
             HashMap<Integer,Integer> hashMap=(HashMap<Integer, Integer>) intersectionIndexList.get(0).third;
-            Set<Integer> keys=hashMap.keySet();
+            Set<Integer> keys=hashMap.keySet();     // key:文档ID  value:TF;
             for(Integer key:keys){
+                Double bm25=0.0;
+                for(int i=0;i<intersectionIndexList.size();i++){  //计算docID:key的BM25
+                    int freqOfWord=((HashMap<Integer,Integer>) intersectionIndexList.get(i).third).get(key);
+                    int numDocOfWord=(Integer) intersectionIndexList.get(i).second;
+                    Double Bim=Math.log((N-numDocOfWord+0.5)/(numDocOfWord+0.5));
+                    bm25=bm25+Bim*(k1+1)*freqOfWord/(K+freqOfWord)*(k2+1)/(k2+1);
+                }
                 Document document=documentService.getDocunmentURLById(key);
                 document.setPr(documentService.getDocunmentPRById(key));
+                document.setBm25(bm25);
                 document= ReadDocument.getContent(document);
                 documentArrayList.add(document);
-                //System.out.println(key+","+hashMap.get(key));
             }
         }
 

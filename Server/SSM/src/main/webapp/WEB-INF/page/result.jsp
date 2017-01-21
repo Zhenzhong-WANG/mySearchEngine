@@ -9,7 +9,7 @@
     <title>Title</title>
     <style>
         .item-list,.header{
-            width: 50%;
+            width: 60%;
             margin: 30px 0 0 13%;
         }
         .header{
@@ -70,6 +70,9 @@
        }
         .item{
             margin-bottom: 22px;
+        }
+        em{
+            color: red;
         }
     </style>
 </head>

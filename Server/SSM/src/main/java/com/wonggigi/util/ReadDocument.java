@@ -6,6 +6,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by handle on 17-1-17.
@@ -13,19 +15,27 @@ import java.io.InputStreamReader;
 public class ReadDocument {
     private static String filePath="/home/Projects/SearchEngine/documents/";
 
-    public static Document getContent(Document document){
+    public static Document getContent(Document document,String[] keyWords){
         try {
+            String result="";
             File file=new File(filePath+document.getId()+".txt");
             if(file.isFile() && file.exists()){ //判断文件是否存在
                 InputStreamReader read = new InputStreamReader(
                         new FileInputStream(file));
                 BufferedReader bufferedReader = new BufferedReader(read);
                 String lineTxt = null;
-                String result="";
+                String content="";
                 while((lineTxt = bufferedReader.readLine()) != null){
-                    result+=lineTxt;
+                    content+=lineTxt;
                 }
-                document.setContent(result.substring(0,110));
+
+                String title=document.getTitle();
+                for (String word:keyWords){
+                    content=content.replaceAll(word,"<em>"+word+"</em>");
+                    title=title.replaceAll(word,"<em>"+word+"</em>");
+                }
+                document.setTitle(title);
+                document.setContent(content);
                 read.close();
             }else{
                 System.out.println("找不到指定的文件");

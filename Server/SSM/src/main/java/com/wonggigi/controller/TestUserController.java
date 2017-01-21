@@ -119,7 +119,7 @@ public class TestUserController {
                 Document document=documentService.getDocunmentURLById(key);
                 document.setPr(documentService.getDocunmentPRById(key));
                 document.setBm25(bm25);
-                document= ReadDocument.getContent(document);
+                document= ReadDocument.getContent(document,words);
                 documentArrayList.add(document);
             }
         }

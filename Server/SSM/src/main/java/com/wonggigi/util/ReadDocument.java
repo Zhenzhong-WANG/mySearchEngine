@@ -30,12 +30,28 @@ public class ReadDocument {
                 }
 
                 String title=document.getTitle();
+                for (int i=0;i<keyWords.length;i++){
+                    String word=keyWords[i];
+                    Pattern pt= Pattern.compile(word);
+                    Matcher mt=pt.matcher(content);
+                    if (mt.find()){
+                        int start=mt.start();
+                        start=start>10?start-10:start;
+                        result=result+content.substring(start,start+50)+"...";
+                        if (i+1<keyWords.length){
+                            String nextWord=keyWords[i+1];
+                            Pattern npt= Pattern.compile(nextWord);
+                            Matcher nmt=npt.matcher(result);
+                            if (nmt.find())i++;
+                        }
+                    }
+                }
                 for (String word:keyWords){
-                    content=content.replaceAll(word,"<em>"+word+"</em>");
+                    result=result.replaceAll(word,"<em>"+word+"</em>");
                     title=title.replaceAll(word,"<em>"+word+"</em>");
                 }
                 document.setTitle(title);
-                document.setContent(content);
+                document.setContent(result);
                 read.close();
             }else{
                 System.out.println("找不到指定的文件");

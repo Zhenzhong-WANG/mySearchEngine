@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="pagerank">
+    <output-path>$PROJECT_DIR$/out/artifacts/pagerank</output-path>
+    <root id="archive" name="pagerank.jar">
+      <element id="module-output" name="PageRank_MapReduce" />
+    </root>
+  </artifact>
+</component>

@@ -1,9 +1,7 @@
 *.txt
-*.idea
 *.class
 *.jar
 *.MF
-*.iml
 *target
 /src/test
 /dictionary
@@ -11,7 +9,7 @@
 /documents
 /TransferMatrix
 
-/PageRank_MapReduce/output/*
-/InvertedIndex_MapReduce/MapReduce/output/*
+/PageRank_MapReduce/output*
+/InvertedIndex_MapReduce/MapReduce/output*
 
 

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MapReduce">
+    <output-path>$PROJECT_DIR$/out/artifacts/MapReduce</output-path>
+    <root id="archive" name="MapReduce.jar">
+      <element id="module-output" name="MapReduce" />
+    </root>
+  </artifact>
+</component>

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
+import javax.print.Doc;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.lang.Math;
@@ -105,6 +106,7 @@ public class TestUserController {
 
 
         threeTupleArrayList.clear();
+
         if (intersectionIndexList.size()!=0){
             HashMap<Integer,Integer> hashMap=(HashMap<Integer, Integer>) intersectionIndexList.get(0).third;
             Set<Integer> keys=hashMap.keySet();     // key:文档ID  value:TF;
@@ -124,10 +126,51 @@ public class TestUserController {
             }
         }
 
+        Collections.sort(documentArrayList,new BM25Comparator());
+        double minBm25=documentArrayList.get(0).getBm25();
+        double maxBm25=documentArrayList.get(documentArrayList.size()-1).getBm25();
 
+        Collections.sort(documentArrayList,new PrComparator());
+        double minPr=documentArrayList.get(0).getPr();
+        double maxPr=documentArrayList.get(documentArrayList.size()-1).getPr();
+
+        for (int i=0;i<documentArrayList.size();i++){
+            double bm25=(documentArrayList.get(i).getBm25()-minBm25)/(maxBm25-minBm25);
+            double pr=(documentArrayList.get(i).getPr()-minPr)/(maxPr-minPr);
+            documentArrayList.get(i).setBm25Pr((0.5*bm25+0.5*pr)*100);
+        }
+        Collections.sort(documentArrayList,new Bm25PrComparator());
         float duration=(System.currentTimeMillis()-startTime)/1000f;
         request.setAttribute("time",duration);
         request.setAttribute("list",documentArrayList);
         return "result";
+    }
+
+
+    class PrComparator implements Comparator<Document>  {
+        public int compare(Document d1, Document d2) {
+            if (d1.getPr() >= d2.getPr()) {
+                return 1;
+            }
+            return  -1;
+        }
+    }
+
+    class BM25Comparator implements Comparator<Document> {
+        public int compare(Document d1, Document d2) {
+            if (d1.getBm25() >= d2.getBm25()) {
+                return 1;
+            }
+            return  -1;
+        }
+    }
+
+    class Bm25PrComparator implements Comparator<Document> {
+        public int compare(Document d1, Document d2) {
+            if (d1.getBm25Pr() <= d2.getBm25Pr()) {
+                return 1;
+            }
+            return  -1;
+        }
     }
 }
